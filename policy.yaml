@@ -1,0 +1,27 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: sample-propagation
+spec:
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: nginx
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - dskarmada2
+        - dskarmada3
+    replicaScheduling:
+      replicaDivisionPreference: Weighted
+      replicaSchedulingType: Divided
+      weightPreference:
+        staticWeightList:
+          - targetCluster:
+              clusterNames:
+                - dskarmada2
+            weight: 1
+          - targetCluster:
+              clusterNames:
+                - dskarmada3
+            weight: 2
